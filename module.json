@@ -1,0 +1,12 @@
+{
+  "id": "VisualTransfer",
+  "name": "NPC VisualTransfer",
+  "author": "Bystander",
+  "version": "1.0.0",
+  "released": "11/01/2018",
+  "updated": "11/01/2018",
+  "description": "Transfers NPC looks",
+  "requires": ["unifiedPatchingFramework"],
+  "moduleLoader": "UPF",
+  "canHotLoad": true
+}
