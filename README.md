@@ -1,4 +1,4 @@
-# oppositeAnimationDisabler
-NPCs that have this flag enabled will use the opposite gender's animations. This patcher disables them all.
+# Visual Transfer Tool
+Transfers NPC appearence from specified mods even if overriden by higher prioority onces
 
 You're going to need the latest [zEdit](https://github.com/z-edit/zedit) release
