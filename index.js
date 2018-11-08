@@ -1,7 +1,7 @@
 /* global ngapp, xelib */
 const visuals = fh.loadJsonFile(patcherPath + '\\visuals.json')
 
-function findVisuals(record) {
+function findVisuals(record, settings) {
     overrides = xelib.GetOverrides(record)
     if (overrides.length < 2) {
         return undefined
@@ -39,7 +39,13 @@ registerPatcher({
     gameModes: [xelib.gmTES5, xelib.gmSSE],
     settings: {
         label: 'NPC VisualTransfer',
-        hide: true
+        templateUrl: `${patcherUrl}/partials/settings.html`,
+        defaultSettings: {
+            visualMods: ""
+        },
+        controller: function($scope) {
+            const visualMods = $scope.settings.zedit-visual-transfer.visualMods;
+        }
     },
     getFilesToPatch: function (filenames) {
         return filenames;
@@ -52,7 +58,7 @@ registerPatcher({
             load: {
                 signature: 'NPC_',
                 filter: function (record) {
-                    p = findVisuals(record);
+                    p = findVisuals(record, settings);
                     if (p) {
                         xelib.Release(p)
                         return true
@@ -62,7 +68,7 @@ registerPatcher({
             },
             patch: function (record) {
                 helpers.logMessage(`Processing visual transfer for ${xelib.LongName(record)}`);
-                visual = findVisuals(record);
+                visual = findVisuals(record, settings);
                 if (!visual) {
                     return
                 }
