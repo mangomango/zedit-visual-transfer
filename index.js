@@ -74,8 +74,6 @@ registerPatcher({
                 copyFromVisual(record, visual, 'NAM9 - Face morph')
                 copyFromVisual(record, visual, 'NAMA - Face parts')
                 copyFromVisual(record, visual, 'Tint Layers')
-                xelib.SetFloatValue(record, "NAM6 - Height", xelib.GetFloatValue(visual, 'NAM6 - Height'))
-                xelib.SetFloatValue(record, "NAM7 - Weight", xelib.GetFloatValue(visual, 'NAM7 - Weight'))
                 xelib.Release(visual)
             }
         }]
