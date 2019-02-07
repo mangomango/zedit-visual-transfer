@@ -1,10 +1,9 @@
-/* global ngapp, xelib */
-const visuals = fh.loadJsonFile(patcherPath + '\\visuals.json')
+/* global xelib */
 
-function findVisuals(record) {
+function findVisuals(record, visuals) {
     overrides = xelib.GetOverrides(record)
     if (overrides.length < 2) {
-        return undefined
+        return undefined;
     }
     for (let i = overrides.length - 1; i >= 0; i--) {
         r = overrides[i]
@@ -39,20 +38,24 @@ registerPatcher({
     gameModes: [xelib.gmTES5, xelib.gmSSE],
     settings: {
         label: 'NPC VisualTransfer',
-        hide: true
+        templateUrl: `${patcherUrl}/partials/settings.html`,
+        defaultSettings: {
+            visualMods: ""
+        }
     },
     getFilesToPatch: function (filenames) {
         return filenames;
     },
     execute: (patchFile, helpers, settings, locals) => ({
         initialize: function () {
-            locals.visual_data = {}
-        },
+            helpers.logMessage(`settings: ${JSON.stringify(settings)}`);
+            locals.visual_data = settings.visualMods.split("\n");
+        },        
         process: [{
             load: {
                 signature: 'NPC_',
                 filter: function (record) {
-                    p = findVisuals(record);
+                    p = findVisuals(record, settings.visualMods);
                     if (p) {
                         xelib.Release(p)
                         return true
@@ -62,7 +65,7 @@ registerPatcher({
             },
             patch: function (record) {
                 helpers.logMessage(`Processing visual transfer for ${xelib.LongName(record)}`);
-                visual = findVisuals(record);
+                visual = findVisuals(record,  settings.visualMods);
                 if (!visual) {
                     return
                 }
