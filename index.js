@@ -49,13 +49,13 @@ registerPatcher({
     execute: (patchFile, helpers, settings, locals) => ({
         initialize: function () {
             helpers.logMessage(`settings: ${JSON.stringify(settings)}`);
-            locals.visual_data = settings.visualMods.split("\n");
+            locals.visual_data = settings.visualMods.split("\n").map(s => s.trim());
         },        
         process: [{
             load: {
                 signature: 'NPC_',
                 filter: function (record) {
-                    p = findVisuals(record, settings.visualMods);
+                    p = findVisuals(record, locals.visual_data);
                     if (p) {
                         xelib.Release(p)
                         return true
@@ -65,7 +65,7 @@ registerPatcher({
             },
             patch: function (record) {
                 helpers.logMessage(`Processing visual transfer for ${xelib.LongName(record)}`);
-                visual = findVisuals(record,  settings.visualMods);
+                visual = findVisuals(record,  locals.visual_data);
                 if (!visual) {
                     return
                 }
